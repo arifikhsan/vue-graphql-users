@@ -2,10 +2,59 @@
   <div class="hello">
     <div>{{ msg }}</div>
     <div v-for="user in users" :key="user.id">
-      <h1>{{ user.firstname }}</h1>
-      <h2>Id: {{ user.id }}</h2>
-      <h3>Age: <span>{{ user.age }}</span></h3>
+      <p>{{ user.firstname }}</p>
+      <p>Id: {{ user.id }}</p>
+      <p>
+        Age:
+        <span>{{ user.age }}</span>
+      </p>
     </div>
+    <hr />
+    <ApolloQuery
+      :query="gql => gql`
+      query {
+        users {
+          firstname
+        }
+      }
+      `"
+    >
+      <template v-slot="{result: {loading, error, data}}">
+        <div v-if="data">
+          <div>
+            <strong>loading :</strong>
+            {{ loading }}
+          </div>
+          <div>
+            <strong>data :</strong>
+            {{ data }}
+          </div>
+          <div>
+            <strong>error:</strong>
+            {{ error }}
+          </div>
+        </div>
+      </template>
+    </ApolloQuery>
+    <hr />
+    <ApolloQuery :query="require('../graphql/users.gql')">
+      <template v-slot="{result: {loading, error, data}}">
+        <div v-if="data">
+          <div>
+            <strong>loading :</strong>
+            {{ loading }}
+          </div>
+          <div>
+            <strong>data :</strong>
+            {{ data }}
+          </div>
+          <div>
+            <strong>error:</strong>
+            {{ error }}
+          </div>
+        </div>
+      </template>
+    </ApolloQuery>
   </div>
 </template>
 
